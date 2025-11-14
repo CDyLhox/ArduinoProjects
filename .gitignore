@@ -32,7 +32,7 @@ csd2a/python_basics/audio_cat/
 #cmake
 *cmake-build-dir*
 # cmakelists.txt
-
+libraries/
 #JUCE
 # JUCE/
 
