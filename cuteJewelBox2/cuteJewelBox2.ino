@@ -79,7 +79,7 @@ void playFile(const char *filename) {
     onButtonRead = digitalRead(onbutton);
 
     // Check if the device should turn off
-    if (!deviceStatus()) {  // If turned off
+    /*if (!deviceStatus()) {  // If turned off
       Serial.println("Stopping playback due to device off state.");
       playWav1.stop();
       break;  // Exit the loop
@@ -90,7 +90,7 @@ void playFile(const char *filename) {
       Serial.println("LDR threshold exceeded. Stopping playback.");
       playWav1.stop();
       break;  // Exit the loop
-    }
+    }*/
 
     // Debugging information
     Serial.print("ldr: ");
