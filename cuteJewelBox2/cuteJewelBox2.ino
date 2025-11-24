@@ -12,10 +12,12 @@ AudioConnection patchCord2(playWav1, 1, audioOutput, 1);
 AudioControlSGTL5000 sgtl5000_1;
 
 #define SDCARD_CS_PIN 10
-#define SDCARD_MOSI_PIN 7
-#define SDCARD_SCK_PIN 14
+#define SDCARD_MOSI_PIN 11//7
+#define SDCARD_SCK_PIN 13//14
 
-int ldr = 14;
+
+
+int ldr = A1;
 int ldrRead;
 int onbutton = 15;
 int onButtonRead;
@@ -44,13 +46,16 @@ void listWavFiles(File dir) {
 void setup() {
   randomSeed(analogRead(2));
   Serial.begin(9600);
+  while (!Serial) ;  // Wait for PC USB connection
 
-  pinMode(ldr, INPUT_PULLUP);
+  Serial.println("cuteJeweryBox");
+
+  pinMode(ldr, INPUT);
   pinMode(onbutton, INPUT_PULLUP);
 
-  AudioMemory(8);
+  AudioMemory(16);
   sgtl5000_1.enable();
-  sgtl5000_1.volume(20);
+  sgtl5000_1.volume(1);
 
   SPI.setMOSI(SDCARD_MOSI_PIN);
   SPI.setSCK(SDCARD_SCK_PIN);
@@ -76,7 +81,7 @@ void playFile(const char *filename) {
   while (playWav1.isPlaying()) {
     // Read sensor and button states
     ldrRead = analogRead(ldr);
-    onButtonRead = digitalRead(onbutton);
+    //onButtonRead = digitalRead(onbutton);
 
     // Check if the device should turn off
     /*if (!deviceStatus()) {  // If turned off
@@ -97,11 +102,10 @@ void playFile(const char *filename) {
     Serial.println(ldrRead);
 
     // Update last button state
-    lastButtonState = onButtonRead;
+    //lastButtonState = onButtonRead;
 
     delay(10);  // Small delay for loop stability
   }
-
   Serial.println("Playback loop exited.");
 }
 
@@ -141,7 +145,8 @@ String getRandomWavFile() {
   }
 
   // Select a random file from the array
-  int randomIndex = random(0, 10);
+  int randomIndex = random(0, fileCount);
+
   Serial.print("Random index: ");
   Serial.println(randomIndex);  // Print the selected random index
 
@@ -170,35 +175,36 @@ void loop() {
   // Serial.println(onButtonRead);
   Serial.print("isturned on?  ");
   Serial.println(onBool);
-  deviceStatus();
+  //deviceStatus();
 
 
 
   if (onBool == 1) {
 
     // If turned on, handle playback logic
-    ldrRead = analogRead(ldr);
+    
+    //ldrRead = analogRead(ldr);
     Serial.print("ldr: ");
     Serial.println(ldrRead);
 
-    if (ldrRead > 7000) {  // Light-dependent behavior
+    /*if (ldrRead > 700) {  // Light-dependent behavior
       delay(0.001);       // Mimic original code's intention
     } else {
       String randomSong = getRandomWavFile();
       if (randomSong != "" && miliTimer > 150) {
         playFile(randomSong.c_str());  // Play the randomly selected song
       }
-    }
+    }*/
 
   }
 
-  lastButtonState = onButtonRead;
+  //lastButtonState = onButtonRead;
 
   delay(10);
 
   // Try manually testing some files
-  // playFile("RUBRBNDG.wav");
-  // delay(15000);  // Wait for the file to finish
+   playFile("RBRBNDGL.wav");
+   delay(15000);  // Wait for the file to finish
   // playFile("HARVESTT.wav");
   // delay(15000);  // Wait for the file to finish
 }

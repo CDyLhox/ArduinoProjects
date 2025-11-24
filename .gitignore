@@ -20,7 +20,7 @@
 .venv/
 .idea/
 cmake-build-debug/
-
+examples/
 
 gitignore/
 
